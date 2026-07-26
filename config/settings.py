@@ -142,8 +142,8 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 
-    "DEFAULT_SCHEMA_CLASS":
-        "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+        
 }
 
 # SIMPLE_JWT SETTINGS
@@ -179,3 +179,33 @@ DEFAULT_FROM_EMAIL = "noreply@example.com"
 
 FRONTEND_URL = "http://localhost:3000"
 BACKEND_URL = "http://localhost:8000"
+
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+        }
+    },
+    "USE_SESSION_AUTH": False,
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "API-docs",
+    "DESCRIPTION": "Reusable Authentication API",
+    "VERSION": "1.0.0",
+
+    "COMPONENT_SPLIT_REQUEST": True,
+
+    "APPEND_COMPONENTS": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    },
+}

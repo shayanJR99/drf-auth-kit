@@ -1,3 +1,3 @@
 from .profile import *
 from .user import *
-from .me import *
+from .my_profile import *

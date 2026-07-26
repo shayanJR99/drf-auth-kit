@@ -1,3 +1,3 @@
 from .login import *
 from .register import *
-from .verify_email import *
+from .resend_verification import *

@@ -1,1 +1,1 @@
-from .me import *
+from .my_profile import *

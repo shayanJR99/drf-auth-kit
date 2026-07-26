@@ -1,15 +1,24 @@
-from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from authentication.api.v1.serializers.login import LoginSerializer, TokenResponseSerializer
+from drf_spectacular.utils import extend_schema
 
-from authentication.api.v1.serializers import LoginSerializer
 
+@extend_schema(
+    auth=[]
+)
+class LoginAPIView(CreateAPIView):
 
-class LoginAPIView(APIView):
-    def post(self, request):
+    serializer_class = LoginSerializer
 
-        serializer = LoginSerializer(data=request.data)
+    @extend_schema(
+    responses=TokenResponseSerializer
+    )
 
+    def create(self, request, *args, **kwargs):
+
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data["user"]
