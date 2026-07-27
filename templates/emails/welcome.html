@@ -1,0 +1,7 @@
+{% extends 'emails/base.html' %}
+
+{% block content %}
+<h2>خوش آمدید! 🎉</h2>
+<p>سلام {{ user.first_name|default:user.email }} عزیز،</p>
+<p>ایمیل شما با موفقیت تأیید شد. اکنون می‌توانید از تمامی امکانات برنامه استفاده کنید.</p>
+{% endblock %}

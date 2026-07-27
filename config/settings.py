@@ -69,7 +69,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -181,20 +181,9 @@ FRONTEND_URL = "http://localhost:3000"
 BACKEND_URL = "http://localhost:8000"
 
 
-SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header",
-        }
-    },
-    "USE_SESSION_AUTH": False,
-}
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "API-docs",
-    "DESCRIPTION": "Reusable Authentication API",
     "VERSION": "1.0.0",
 
     "COMPONENT_SPLIT_REQUEST": True,
@@ -208,4 +197,12 @@ SPECTACULAR_SETTINGS = {
             }
         }
     },
+
+    "AUTHENTICATION_WHITELIST": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
 }
+
+# --- Media files (User uploaded files) ---
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
