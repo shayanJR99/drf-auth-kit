@@ -5,3 +5,4 @@ drf-spectacular
 python-dotenv
 psycopg2-binary
 Pillow
+django-ratelimit
