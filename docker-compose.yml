@@ -1,15 +1,18 @@
 services:
 
   backend:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+
     container_name: drf_auth_backend
-    restart: always
+
+    restart: unless-stopped
 
     command: python manage.py runserver 0.0.0.0:8000
 
     volumes:
       - .:/app
-      - /home/shayanjr/.vscode/extensions:/root/.vscode-server/extensions
 
     ports:
       - "8000:8000"
@@ -18,8 +21,36 @@ services:
       - .env
 
     depends_on:
-      - db
-      - smtp4dev
+      db:
+        condition: service_started
+
+      smtp:
+        condition: service_started
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: drf_auth_frontend
+
+    restart: unless-stopped
+
+    command: npm run dev -- --host
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    ports:
+      - "5173:5173"
+
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+
+    depends_on:
+      - backend
 
 
   db:
@@ -27,7 +58,7 @@ services:
 
     container_name: drf_auth_db
 
-    restart: always
+    restart: unless-stopped
 
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -41,23 +72,23 @@ services:
       - "5432:5432"
 
 
-  smtp4dev:
+  smtp:
     image: rnwood/smtp4dev:v3
 
     container_name: drf_auth_smtp
 
-    restart: always
+    restart: unless-stopped
 
     ports:
       - "5000:80"
       - "2525:25"
 
     volumes:
-      - smtp4dev_data:/smtp4dev
+      - smtp_data:/smtp4dev
 
 
 volumes:
 
   postgres_data:
 
-  smtp4dev_data:
+  smtp_data:

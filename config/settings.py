@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "rest_framework_simplejwt.token_blacklist",
+    "corsheaders",
+
     # Local apps
     "authentication",
     "emails",
@@ -55,6 +57,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -69,7 +72,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -181,20 +184,9 @@ FRONTEND_URL = "http://localhost:3000"
 BACKEND_URL = "http://localhost:8000"
 
 
-SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header",
-        }
-    },
-    "USE_SESSION_AUTH": False,
-}
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "API-docs",
-    "DESCRIPTION": "Reusable Authentication API",
     "VERSION": "1.0.0",
 
     "COMPONENT_SPLIT_REQUEST": True,
@@ -208,4 +200,22 @@ SPECTACULAR_SETTINGS = {
             }
         }
     },
+
+    "AUTHENTICATION_WHITELIST": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
 }
+
+# --- Media files (User uploaded files) ---
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+]
